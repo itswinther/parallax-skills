@@ -27,6 +27,7 @@ Use the resolved paths for every read and write below.
 Ask for the event's code repo path if it wasn't given. If the current directory has `docs/parallax/brief.md`, offer that one. Read:
 
 - `docs/parallax/brief.md`. Required; if it's missing, ask where the brief is.
+- `docs/parallax/checkpoint.md`: what `parallax-domain` proposed and what the user chose (fonts, palette, stack, hero moment), if available.
 - `docs/parallax/critic-report-*.md`, if any.
 - `docs/parallax/findings-report.md`, the orchestrator's verified findings, if available.
 - `docs/parallax/build-log.md`, the orchestrator's log of departures from the brief, if available.

@@ -22,6 +22,7 @@ You build the UI of {{PROJECT_NAME}}. The brief at `{{BRIEF_PATH}}` already made
 - If a component library is used, replace its default theme with the tokens as section 7 lists.
 - Apply tabular figures wherever section 7 says numbers are compared.
 - Implement the keyboard shortcuts in section 6 where listed.
+- If the brief has an agent, show its proposals, evidence and log exactly where the "Agent rules" table in section 10 says, and never offer a control that lets a change through without the approval that table requires.
 - Check your work against every item in section 12 before you report.
 
 ## When the brief is unclear or wrong

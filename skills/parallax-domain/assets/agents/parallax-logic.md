@@ -17,7 +17,7 @@ You build everything behind the screens of {{PROJECT_NAME}}: data access, API en
 - Implement every function or endpoint in the contract with the exact types, including the error cases it lists.
 - Follow the mock data plan in section 10. Seed it deterministically, so the hero moment starts from the same state on every run, and include the records the hero moment needs.
 - Keep the domain's data conventions from section 4: units, ID formats, time zones, number formats. Store timestamps unambiguously and convert only at the edge the brief names.
-- Respect the domain rules the brief states (for example what the system may do on its own and what needs a person's approval). Those rules often carry the judging criteria.
+- If the brief has an agent, implement its rules from the "Agent rules" table in section 10 exactly: what it does on its own, what waits for a person's approval, whom it may and may never contact, how it identifies itself, and what it records for each action. Enforce approval in the logic, not only in the UI, so nothing can change a booking or send a message without an approval record. These rules often carry the judging criteria.
 - Make the hero moment's path work end to end and add a test for it. That path is what the demo video shows.
 - Make stale and error conditions observable through the contract (for example a data timestamp or an error result), because the UI has to show them.
 

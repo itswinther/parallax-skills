@@ -50,7 +50,7 @@ ln -s "<toolkit>/skills/parallax-domain-learn" ~/.claude/skills/parallax-domain-
 ### Requirements
 
 - Claude Code with access to Opus 5.5 (`claude-opus-5-5`) and Sonnet 5.5 (`claude-sonnet-5-5`).
-- Web search enabled, for the domain research.
+- Web search enabled, and web fetch able to open vendor help centres and standards sites, for the domain research. Where pages are blocked (some cloud sessions allow only a short host list), the skill falls back to search results and says so at the checkpoint. Searches are shared by the parallel research tracks within one turn, so deep research can take more than one round.
 - `npm` (or `pip`) on the path, so the skill can pin package versions when it writes the brief.
 - Playwright in the code repo during the build, for the critic's screenshots. The orchestrator adds it if it's missing.
 
@@ -67,13 +67,14 @@ Plain language works too: "We chose the exceptions queue idea for the Bahn chall
 What happens:
 
 1. It reads your inputs and its pattern library, then researches the domain live: users and tasks, real tools and their UI conventions, standards and data conventions. It writes `docs/parallax/domain-research.md`.
-2. **It stops once.** You get the users and tasks with sources, the proposed screens, 2 to 3 font pairings to choose from, a palette, the stack with pinned versions and a fallback, the demo hero moment, any conflicts with the library, and questions to ask the sponsor. You pick the fonts and approve or change the rest.
+2. **It stops once.** You get the users and tasks with sources, the proposed screens, 2 to 3 font pairings to choose from, a palette, the stack with pinned versions and a fallback, the demo hero moment, any conflicts with the library, and questions to ask the sponsor. It also writes all of this to `docs/parallax/checkpoint.md`, so you can read it in full while answering. You pick the fonts and approve or change the rest.
 3. It finishes without stopping again and writes, in the code repo:
 
 | File | What it is |
 | --- | --- |
 | `docs/parallax/brief.md` | The brief: 15 sections, from users and screens to acceptance criteria |
 | `docs/parallax/domain-research.md` | Research notes with sources |
+| `docs/parallax/checkpoint.md` | What was proposed at the checkpoint, and what you chose |
 | `docs/parallax/orchestrator-prompt.md` | The prompt for the coding session, also printed in chat |
 | `.claude/agents/parallax-ui.md` | UI builder |
 | `.claude/agents/parallax-logic.md` | Data, API, agent logic and mock data builder |

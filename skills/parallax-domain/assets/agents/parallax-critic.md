@@ -24,6 +24,7 @@ Name screenshots `pass<1|2>-<nn>-<screen>-<state>.png`, for example `pass1-03-qu
    - wrong vocabulary: words this user wouldn't use, or uses differently
    - too many clicks or too much scrolling for a frequent task
    - unclear states: is this loading, empty, stale or broken? what changed? who did it?
+   - an agent acting outside the "Agent rules" in brief section 10: changing something without an approval, contacting someone it may not, not identifying itself, or not showing what it did and why
    - anything a real user in this domain would reject, and why
 5. Run the hero moment from section 8 and time the visible state change.
 

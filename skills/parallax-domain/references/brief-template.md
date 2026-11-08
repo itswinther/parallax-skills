@@ -79,7 +79,7 @@ Written <YYYY-MM-DD> by parallax-domain · Research: docs/parallax/domain-resear
 - **Fonts (picked by <name> at the checkpoint):**
   | Role | Family | Weights | Features | Source and licence | Fallback stack |
   | --- | --- | --- | --- | --- | --- |
-  | UI | | | `tnum` where numbers are compared | | |
+  | UI | | | <tabular digits by default, or `tnum` where numbers are compared; `zero` if present> | | |
   | Mono | | | | | |
 - **Type scale:**
   | Token | Size / line height | Weight | Used for |
@@ -96,7 +96,7 @@ Written <YYYY-MM-DD> by parallax-domain · Research: docs/parallax/domain-resear
 
 ## 8. Hero moment
 - **What it shows:** <one sentence: the workflow step and why it matters to the sponsor>
-- **Starting state:** <exact data: which record, which fields>
+- **Starting state:** <exact data: the dataset record ID if there is one, which fields, their values>
 - **Script:**
   | Time | Presenter does or says | System does | On screen |
   | --- | --- | --- | --- |
@@ -105,8 +105,9 @@ Written <YYYY-MM-DD> by parallax-domain · Research: docs/parallax/domain-resear
 - **Reset:** <how to return to the starting state between takes>
 
 ## 9. Stack
-| Package | Exact version | Why |
-| --- | --- | --- |
+<!-- guide: "From" is "starter lockfile" for packages the starter already has, "added" for new ones -->
+| Package | Exact version | From | Why |
+| --- | --- | --- | --- |
 - Versions checked: <YYYY-MM-DD, command used>
 - Run: `<command to start the app>` → <local URL>
 - **Fallback:** <the starter repo's or challenge's stack, or the plainest version of the chosen one>
@@ -122,6 +123,19 @@ Written <YYYY-MM-DD> by parallax-domain · Research: docs/parallax/domain-resear
   | Name | Input | Output | Errors | Used by screen |
   | --- | --- | --- | --- | --- |
 - **Mock data plan:** <source of mock data, size, seed, which records make the hero moment reproducible, how mocks are swapped for real data>
+
+### Agent rules
+<!-- guide: only if the idea includes an AI agent; otherwise write "No agent." -->
+| Rule | Value | Source |
+| --- | --- | --- |
+| Does on its own | <for example read records, ask the driver, look up options> | <challenge rule or research> |
+| Needs a person's approval | <for example any booking, date, cost or customer message> | |
+| May contact | <who> | |
+| Never contacts | <who> | |
+| Identifies itself as | <for example "Bahn assistant (AI)" on every message to a person> | <for example AI disclosure law> |
+| Records per action | <reason, evidence references, time, who approved> | |
+| Stops and hands over when | <conditions> | |
+| How the UI shows its work | <where proposals, evidence and its log appear> | |
 
 ## 11. Work split and order
 ### parallax-ui

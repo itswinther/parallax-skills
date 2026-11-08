@@ -13,6 +13,7 @@ The output is files, not code:
 | File (in the code repo) | What it is |
 | --- | --- |
 | `docs/parallax/domain-research.md` | Full research notes with source links |
+| `docs/parallax/checkpoint.md` | What was proposed at the checkpoint, and what the human chose |
 | `docs/parallax/brief.md` | The brief, structured by `references/brief-template.md` |
 | `docs/parallax/orchestrator-prompt.md` | Paste-ready prompt for the coding session |
 | `.claude/agents/parallax-ui.md` | UI builder subagent |
@@ -76,20 +77,24 @@ If the library has no matching archetype yet, say so in one line and continue.
 
 Follow `references/research-playbook.md`. It lists the questions, where to look and the output format.
 
+**Check your reach first.** Fetch one help-centre or docs page of a product in this domain with WebFetch. If it doesn't open (a network allowlist or proxy can block vendor and standards sites), tell the subagents, so they rely on search results and say so instead of failing page by page. Knowing this up front also tells you how much the screenshot evidence will be worth.
+
 Run the three research tracks as parallel subagents (Agent tool, general-purpose), one each for:
 1. users and tasks
 2. real tools and their UI conventions
 3. standards, constraints and data conventions
 
-Give each subagent the extracted input facts, the idea, its track's questions and sources from the playbook, and the playbook's subagent output format. Parallel tracks are faster, and each subagent keeps its page dumps out of your context.
+Give each subagent the extracted input facts, the idea, its track's questions and sources from the playbook, the playbook's subagent output format, and a search budget. Parallel tracks are faster, and each subagent keeps its page dumps out of your context.
+
+**Budget the searches.** Web searches can run out within one turn, and parallel subagents share the budget: in testing, three tracks shared about 200 searches and all three ran out before finishing. Give each track roughly a third of what's available and tell it to spend searches on its weakest questions first. "No limit" here means no limit across rounds, not within one: when a round runs out, run the next round on the thin questions in a later turn.
 
 Then merge the results and check whether research is **sufficient**:
 - every question in the playbook's question list has an answer backed by a source, or is explicitly listed as an assumption, and
 - your latest round of searches did not change any answer.
 
-If it is not sufficient, run another round on the thin questions only. There is no time or search limit; keep going until both conditions hold. The second condition matters because the first thing you find is often a vendor's marketing page, and only saturation tells you that you have seen the real picture.
+If it is not sufficient, run another round on the thin questions only. There is no time limit; keep going until both conditions hold. The second condition matters because the first thing you find is often a vendor's marketing page, and only saturation tells you that you have seen the real picture. It needs at least two rounds to test. If you had to stop after one, say so at the checkpoint.
 
-Check before moving on: you have looked at the actual screens of named products (help-centre screenshots, docs, demo videos), not concept shots. Concept shots on Dribbble or Behance show what designers imagine, and they are where the AI look comes from.
+Check before moving on: you have looked at the actual screens of named products (help-centre screenshots, docs, demo videos), not concept shots. Concept shots on Dribbble or Behance show what designers imagine, and they are where the AI look comes from. If pages could not be opened and screenshots were never seen, density and layout findings are assumptions, not facts; list them that way and add a sponsor question where they matter.
 
 ### 2c. Sponsor questions
 
@@ -108,25 +113,27 @@ Work in this order. Each step depends on the one before.
 3. **Density, navigation and colour semantics.** Set them from the research. In operations and HMI work, colour signals state and abnormal conditions, not decoration, so most of the screen is neutral and colour draws the eye to what needs action. Give every colour exactly one meaning, and make sure the meaning is also carried by text or an icon, because colour-blind users and washed-out projectors exist.
 4. **States.** For every screen decide what the user sees when it is empty, loading, in error, in an alert condition, and when data is stale. Real operators judge a tool by these states; stale data shown as fresh is how wrong decisions get made.
 5. **Interactions.** Add keyboard shortcuts where the domain expects them (dispatch, support queues, trading, data entry), not where it doesn't (kiosks, field mobile).
-6. **Stack.** Choose it per domain: a data grid library for dense operations tables, a map library for dispatch, plain HTML for a kiosk.
-   - Pin exact versions, checked now: `npm view <pkg> version`, plus `npm view <pkg>@<version> peerDependencies` to confirm it fits the framework version. For Python, `pip index versions <pkg>`. Record the date you checked.
+6. **Agent rules,** if the idea includes an AI agent. Decide what it may do on its own (read, ask, look up), what needs a person's approval, whom it may contact and whom never, how it identifies itself to the people it talks to, what it records for each action (reason, evidence, time), and when it stops and hands over. Take these from the challenge rules and the standards research; laws on AI disclosure and human oversight can turn a nice-to-have into a requirement. Builders who aren't told will guess, and an agent that oversteps is the fastest way to lose a judge's trust.
+7. **Stack.** Choose it per domain: a data grid library for dense operations tables, a map library for dispatch, plain HTML for a kiosk.
+   - Pin exact versions. For packages the starter repo already has, use the version its lockfile resolves (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `poetry.lock` and so on), not the latest release: upgrading the framework mid-event risks breakage for no gain. For packages you add, check now with `npm view <pkg> version`, plus `npm view <pkg>@<version> peerDependencies` to confirm it fits the starter's framework version. For Python, `pip index versions <pkg>`. Record the date you checked.
    - Name a fallback: the stack the starter repo or challenge brief uses. If neither names one, the plainest version of the chosen stack (for example a plain HTML table instead of a grid library).
    - State a concrete switch rule, such as "if the grid is not rendering real rows from the contract within 1 hour of setup, switch to the fallback."
    - If a component library is used, list which theme variables get replaced by the brief's tokens. Default themes are a large part of the generic look.
-7. **Hero moment.** Design exactly one for the 2 to 3 minute demo video.
+8. **Hero moment.** Design exactly one for the 2 to 3 minute demo video.
    - It is a real step in the workflow, such as an exception resolving or a row moving from "needs action" to "done".
    - The state change is visible on camera within about 10 seconds, using realistic data.
    - It impresses through what the system does, never through visual effects.
    - Prefer the step that best shows the highest-weighted judging criterion.
+   - If the challenge has a dataset, search it for a real record that fits the idea and use it as the starting state, citing its ID. Sponsors recognise their own cases, and a real record comes with the messy details that make the system's work visible. Prefer a record whose story shows the system's judgement, such as checking before acting or concluding that nobody else needs to be contacted, over one that only shows speed.
    - Make its data part of the mock data plan so every take of the video starts from the same state.
-8. **Fonts and palette.** Prepare 2 to 3 font pairings by `references/font-guidance.md`. Build a palette of neutrals plus semantic status colours, each with one meaning and a hex value. Check contrast: at least 4.5:1 for text and 3:1 for non-text UI such as borders and status markers (WCAG 2.2 AA). Compute the ratios rather than eyeballing them.
-9. **Ban list check.** Read `references/ban-list.md` and check every proposal against it. If research suggests a project-specific addition (for example, "red only for abnormal states" in HMI), prepare it with its source for the checkpoint. Project additions go into this brief only, never into `references/ban-list.md`.
+9. **Fonts and palette.** Prepare 2 to 3 font pairings by `references/font-guidance.md`. Build a palette of neutrals plus semantic status colours, each with one meaning and a hex value. Check contrast: at least 4.5:1 for text and 3:1 for non-text UI such as borders and status markers (WCAG 2.2 AA). Compute the ratios rather than eyeballing them.
+10. **Ban list check.** Read `references/ban-list.md` and check every proposal against it. If research suggests a project-specific addition (for example, "red only for abnormal states" in HMI), prepare it with its source for the checkpoint. Project additions go into this brief only, never into `references/ban-list.md`.
 
 ## 4. Checkpoint: the one stop
 
-Present the following in chat, compactly, in this order:
+Write the following to `<code-repo>/docs/parallax/checkpoint.md` and present it in chat, compactly, in this order. The file matters because the question dialog can cover the chat while the human answers, and because the retro later needs to know what was proposed and what was chosen.
 
-1. **Users and tasks:** who the primary user is and the ranked core tasks, plus the 5 to 10 domain facts that drove the design, each with its source.
+1. **Users and tasks:** who the primary user is and the ranked core tasks, plus the 5 to 10 domain facts that drove the design, each with its source. Say how the evidence was gathered: pages and screenshots actually opened, or search results only, and how many research rounds ran.
 2. **Screens:** one line each, naming the task it serves and its primary view type.
 3. **Fonts:** 2 to 3 pairings, each with reasons specific to this domain.
 4. **Palette:** a table of token, hex, meaning and contrast ratio.
@@ -136,13 +143,13 @@ Present the following in chat, compactly, in this order:
 8. **Project ban additions**, if any, each with its source.
 9. **Sponsor questions**, each with what changes depending on the answer.
 
-Then ask with AskUserQuestion. The dialog may hide your earlier text, so make every question self-contained and name the options in full:
+Then ask with AskUserQuestion. The dialog may hide your earlier text, so make every question self-contained, name the options in full, and point to `docs/parallax/checkpoint.md` for the details:
 
 - **Fonts** (single select): one option per pairing, labelled with the family names, with a one-line reason as the description. The human can type their own pairing under Other.
 - **Approve as proposed** (multi-select): Screens, Palette, Stack, Hero moment (plus Project ban additions if you proposed any). Anything left unticked needs a change; the human describes it in the notes or under Other.
 - **Sponsor answers** (single select): "Not asked yet, keep them as open questions" or "I have answers" (typed under Other).
 
-If something is unticked without a description of the change, ask once in chat. That is still part of this checkpoint. Then finish without stopping again. If a new question comes up later, decide it from the research and the principles, and log it under Open questions in the brief.
+If something is unticked without a description of the change, ask once in chat. That is still part of this checkpoint. Append the human's answers to `docs/parallax/checkpoint.md` under a "Chosen" heading. Then finish without stopping again. If a new question comes up later, decide it from the research and the principles, and log it under Open questions in the brief.
 
 ## 5. Brief
 
@@ -154,6 +161,7 @@ The test for every section: could a builder who has never seen this domain build
 - Give exact tokens, sizes and proportions, not adjectives.
 - Name only the fonts the human picked.
 - Copy `references/ban-list.md` into section 12 as it is, then add the project additions the human approved.
+- If the idea includes an agent, write its rules from step 3 into section 10 and add acceptance criteria that test them (for example, "no booking changes without an approval event").
 - Write acceptance criteria that a person or a script can check with a yes or no.
 - Write the critic brief as a concrete persona and a full session scenario that touches every screen and the hero moment.
 
