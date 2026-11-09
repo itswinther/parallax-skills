@@ -95,7 +95,7 @@ Plain language works too: "We chose the exceptions queue idea for the Bahn chall
 
 What happens:
 
-1. It reads your inputs and its pattern library, then researches the domain live: users and tasks, real tools and their UI conventions, standards and data conventions. It writes `docs/parallax/domain-research.md`.
+1. It reads your inputs and its pattern library, and numbers everything the sponsor has said they want. Then it researches the domain live: users and tasks, real tools with their UI conventions and their weaknesses, standards and data conventions. It writes `docs/parallax/domain-research.md`.
 2. **It stops once.** You get:
    - the users and tasks with sources, and what today's tools do badly;
    - the proposed screens, what the first screen tells a newcomer in 10 seconds, and the screen sizes it will be built for;
@@ -155,6 +155,19 @@ During the build the orchestrator also writes `docs/parallax/critic-report-<n>.m
 
 If the session is cut off, or you get new feedback after the brief is written, run `parallax-domain` again on the same repo: it resumes from the files in `docs/parallax/`, or revises the brief, without redoing the research.
 
+### What the brief decides
+
+Beyond screens, fonts and colours, the brief settles the things that decided the outcome in real runs:
+
+- **First screen.** Three to five questions a newcomer must be able to answer from the first screen in 10 seconds, with a headline sentence computed from the data. The build checks it on a quarter-size screenshot, where only what stands out survives.
+- **Emphasis.** At most three levels, and which one or two values get the top level on each screen. Dense is fine; flat is not.
+- **Where it beats today's tools.** One to three deliberate departures from how the real tools work, each tied to a weakness the research or the sponsor named. Everything else follows the domain's conventions.
+- **Sponsor asks.** Each one is met by a named screen element or declined at the checkpoint. None is dropped silently.
+- **Screen sizes.** The user's screen, the demo laptop, and a phone if a link is shared, with what changes at each.
+- **Real data.** Example values, column widths and constant columns are taken from the dataset, not guessed.
+- **Cold open.** What each screen shows to a judge who clicks around without the script.
+- **Time.** With a deadline: a plan worked back from it, and a cut line that says what is dropped first.
+
 ## Use `parallax-domain-learn`
 
 Run it after the event, pointing at the event's code repo:
@@ -173,6 +186,10 @@ It loads the brief, critic reports, findings reports and build log, then asks wh
 - A rule seen again gains evidence and a higher count. A rule contradicted by a later event is marked contested with both sides, and nothing is removed without your say-so.
 - This repo is public, so lessons and bans become public once pushed. `parallax-domain-learn` asks before every push; keep sponsor-confidential details out of the evidence lines.
 - `skills/parallax-domain/references/ban-list.md` holds the six bans on the "AI look". New bans enter only through `parallax-domain-learn`. A logo or wordmark you choose to keep is exempt from the font and letter-spacing bans.
+
+## Status
+
+The skills have been through one dry run and one full run: planning, build and four critic rounds on a real hackathon project, done after the event. The lessons from both are in this repo. The current version has not yet been run end to end since the last round of changes, so expect rough edges, and open an issue with what you find.
 
 ## Layout
 
