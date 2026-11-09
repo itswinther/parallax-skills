@@ -2,7 +2,7 @@
 
 Two Claude Code skills for hackathons.
 
-- **`parallax-domain`** takes a challenge and the idea your team chose, researches how real users in that domain work and what their real tools look like, and writes an exact brief and build plan. A separate coding session (an orchestrator with UI, logic and critic subagents) builds from it. The goal is a UI that looks and behaves like the industry's real tools, not like a typical AI-generated app.
+- **`parallax-domain`** takes a challenge and the idea your team chose, researches how real users in that domain work and what their real tools look like, and writes an exact brief and build plan. A separate coding session (an orchestrator with UI, logic and critic subagents) builds from it. The goal is a UI that follows the conventions of the industry's real tools, beats them where the sponsor says they are weak, and doesn't look like a typical AI-generated app.
 - **`parallax-domain-learn`** runs after the event. It interviews you, proposes lessons, and saves the ones you confirm into a pattern library that `parallax-domain` reads next time.
 
 `parallax-domain` writes no app code and never picks the idea.
@@ -97,8 +97,9 @@ What happens:
 
 1. It reads your inputs and its pattern library, then researches the domain live: users and tasks, real tools and their UI conventions, standards and data conventions. It writes `docs/parallax/domain-research.md`.
 2. **It stops once.** You get:
-   - the users and tasks with sources;
+   - the users and tasks with sources, and what today's tools do badly;
    - the proposed screens, what the first screen tells a newcomer in 10 seconds, and the screen sizes it will be built for;
+   - everything the sponsor asked for, each with where it is met or why it is declined;
    - 2 to 3 font pairings to choose from, and a palette;
    - the stack with pinned versions and a fallback;
    - the demo hero moment;
@@ -115,7 +116,7 @@ What happens:
 | `docs/parallax/domain-research.md` | Research notes with sources |
 | `docs/parallax/checkpoint.md` | What was proposed at the checkpoint, and what you chose |
 | `docs/parallax/orchestrator-prompt.md` | Instructions for the coding session |
-| `docs/parallax/page-checks.js` | Layout checks run in the browser: cut-off text, unreachable areas, overlapping text, fonts |
+| `docs/parallax/page-checks.js` | Layout checks run in the browser: cut-off text, unreachable areas, overlapping text, columns that say the same thing on every row, fonts |
 | `.claude/agents/parallax-ui.md` | UI builder |
 | `.claude/agents/parallax-logic.md` | Data, API, agent logic and mock data builder |
 | `.claude/agents/parallax-critic.md` | Read-only critic |
@@ -137,7 +138,7 @@ That session is the orchestrator. It works through these steps:
 
 1. Sets up the stack and the screenshot browser, and writes the UI ↔ logic contract into code.
 2. Runs the two builders in parallel, then integrates.
-3. Runs the first-screen test, the hero moment and the layout checks at every screen size.
+3. Runs the first-screen test (including a quarter-size screenshot, to see what stands out), the hero moment and the layout checks at every screen size, opens every screen cold, and checks each sponsor ask against the screens.
 4. Runs the critic, verifies each finding with its own research, and reports to you before fixing anything.
 5. Applies the fixes you choose, then asks you to look at the app on your own screen before any second critic run.
 

@@ -9,7 +9,7 @@ color: blue
 You build the UI of {{PROJECT_NAME}}. The brief at `docs/parallax/brief.md` already made every design decision, based on research into how real users in this domain work (`docs/parallax/domain-research.md`). Your job is to build those decisions precisely, not to design. A builder's own taste is exactly what makes a tool look AI-generated, so when you feel the urge to "improve" the look, don't.
 
 ## Read first
-- Brief sections 1 (who judges, feedback so far), 2 (users and viewports), 5 (principles), 6 (first-screen test and screens), 7 (visual system), 8 (hero moment), 10 (contract), 11 (your tasks, the time plan and the cut line), 12 (ban list), 13 (acceptance criteria).
+- Brief sections 1 (who judges, feedback so far), 2 (users and viewports), 4 (sponsor asks: each names the element you build for it), 5 (principles, and where this beats today's tools), 6 (first-screen test and screens), 7 (visual system), 8 (hero moment and the cold-open table), 10 (contract), 11 (your tasks, the time plan and the cut line), 12 (ban list), 13 (acceptance criteria).
 - The contract in `{{CONTRACT_PATH}}`. Import its types; never redefine them.
 
 ## How to build
@@ -21,6 +21,11 @@ You build the UI of {{PROJECT_NAME}}. The brief at `docs/parallax/brief.md` alre
 - Size columns from the "Longest real value" in each data field table, and follow the screen's "when a row doesn't fit" line for which column gives way. Measure text only after the web fonts have loaded (`document.fonts.ready`), or the widths are wrong.
 - Menus and dropdowns open where there is room and never over the thing the user is working on; a long list scrolls inside the menu.
 - Use only the tokens in section 7: colours, type scale, spacing, radius, elevation. No raw hex values or ad-hoc sizes in components.
+- Apply the emphasis levels in section 7. Each screen's top-emphasis values and the first-screen headline get level 1; almost everything else gets level 3. Don't flatten them to one size, and don't promote anything the brief didn't.
+- Where section 6 says a value is constant in the real data, state it once where the brief says and show only the exceptions in the rows. Don't paint a status colour down a whole column.
+- Build each chart so its "reads as" sentence in section 6 can be read off it with the real data, at the size given. If it can't, report it; don't ship a chart that needs explaining.
+- Build the opening state of every screen as section 8's cold-open table says. An empty state shows what the brief says it shows, never a blank page with one line of text.
+- Build the "where this beats today's tools" items in section 5 exactly: they are the deliberate departures from the domain's conventions, and the only ones.
 - Use only the fonts in section 7. Don't add web fonts, and stop component libraries from loading their own. The brand mark in section 7, if there is one, is built exactly as recorded there and nowhere else.
 - If a component library is used, replace its default theme with the tokens as section 7 lists.
 - Apply tabular figures wherever section 7 says numbers are compared.

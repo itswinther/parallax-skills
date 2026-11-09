@@ -66,22 +66,35 @@ At every viewport listed, every region can be reached by scrolling, no text is d
 ### Assumptions
 - <assumption> — what changes if it's wrong
 
+### Sponsor asks
+<!-- guide: every concrete thing the sponsor said they want to see or do, in their words. Each is met by a named element in section 6, or declined with the reason approved at the checkpoint. None is left blank. -->
+| # | Ask, in their words | Where they said it | Met by (screen and element), or "Declined: <why>" |
+| --- | --- | --- | --- |
+
 ## 5. Domain design principles
 <!-- guide: 3 to 6 rules derived from the research or the library, each with its reason -->
 1. **<rule>.** Why: <reason, with source or `library: <archetype> / <rule>`>
+
+### Where this beats today's tools
+<!-- guide: one to three deliberate departures from how the real tools do it, each tied to a weakness from the research or the sponsor's own words. Everything else follows the domain's conventions. -->
+| Today's tools | This build | Source of the weakness |
+| --- | --- | --- |
 
 ## 6. Screens
 ### First-screen test
 <!-- guide: what someone who has never used the tool reads off the first screen in 10 seconds, with no click and no scrolling. 3 to 5 questions about the whole workload, not about one item. Answers are computed from the data, with the query. -->
 - **Opens on:** <screen 6.<n>, and with which data loaded>
+- **Headline:** <the one sentence at top emphasis that states the answers in the users' words, as a template with the fields it is computed from, and one real example>
 - **Questions the first screen answers:**
   | Question | Answer from the data (query or file) | Where on the first screen it is read |
   | --- | --- | --- |
+- **Thumbnail test:** in a screenshot of this screen at the primary viewport, shrunk to a quarter of its size, what catches the eye is <the elements, which must be the answers above>, and not <what must stay quiet: constant values, navigation, decoration>.
 
 <!-- guide: then one subsection per screen, ordered by the task rank they serve -->
 ### 6.<n> <Screen name>
 - **Purpose:** <one sentence> · **Serves task:** <rank and name>
 - **Primary view type:** <queue / table / map / timeline / form / board ...>
+- **Top emphasis:** <the one or two values on this screen that get emphasis level 1 from section 7, and why the user's decision turns on them>
 - **Layout regions:**
   | Region | Position and share of the screen | Contents |
   | --- | --- | --- |
@@ -92,6 +105,8 @@ At every viewport listed, every region can be reached by scrolling, no text is d
   | UI label | Source (`table.column`, `derived: <rule>` or `mock: <source>`) | Format | Example (record ID) | Longest real value |
   | --- | --- | --- | --- | --- |
 - **When a row doesn't fit:** <which column gives way first, and how: truncate with the full value in a tooltip, wrap, or hide the column. Name the columns that never truncate.>
+- **Constant values:** <any column or status colour that one value fills on most rows of the real data, counted, and where that common case is stated once instead. Or "None: checked against <dataset>.">
+- **Charts:** <for each chart or graphic on this screen: the one sentence a user reads off it, and the smallest size at which that works. Or "None.">
 - **States:**
   | State | What the user sees |
   | --- | --- |
@@ -112,6 +127,13 @@ At every viewport listed, every region can be reached by scrolling, no text is d
 - **Type scale:**
   | Token | Size / line height | Weight | Used for |
   | --- | --- | --- | --- |
+- **Emphasis levels:**
+  <!-- guide: at most three. Level 1 is for data the decision turns on, never for a title, a tagline or the product name. -->
+  | Level | Type token and weight | Used for |
+  | --- | --- | --- |
+  | 1 | | <the first-screen headline; each screen's top-emphasis values> |
+  | 2 | | |
+  | 3 | | <everything else> |
 - **Tabular figures:** <where `font-variant-numeric: tabular-nums` is applied>
 - **Colour tokens:**
   | Token | Hex | Meaning | Contrast on background | Used for |
@@ -120,7 +142,7 @@ At every viewport listed, every region can be reached by scrolling, no text is d
 - **Borders, radius, elevation:** <values; where elevation is allowed>
 - **Brand mark:** <the logo or wordmark the human chose to keep at the checkpoint: where it sits, its font, size and letter-spacing. The font and letter-spacing bans don't apply to it. Or "None.">
 - **Icon set:** <package and version, size, stroke; icons always paired with a text label unless listed here>
-- **Chart rules:** <which charts are allowed, axis and label rules, colour use, or "No charts: <why>">
+- **Chart rules:** <which charts are allowed, axis and label rules, colour use, or "No charts: <why>". Every chart has its "reads as" sentence in its screen's section; one that can't deliver it with the real data is replaced by a ranked table or a sentence.>
 - **Component library theme:** <which default theme variables are replaced by which tokens, or "No component library">
 
 ## 8. Hero moment
@@ -132,6 +154,11 @@ At every viewport listed, every region can be reached by scrolling, no text is d
   | 0:00 | | | |
 - **The state change:** <what visibly changes, in which region, within about 10 seconds>
 - **Reset:** <how to return to the starting state between takes>
+
+### What a judge sees cold
+<!-- guide: someone opens the demo link, or clicks to any screen, without the script. One row per screen in section 6. No screen opens on a bare empty state: seed the demo data, or make the empty state show a real example. -->
+| Screen | Opening state in the demo | What it shows without a click |
+| --- | --- | --- |
 
 ## 9. Stack
 <!-- guide: "From" is "starter lockfile" for packages the starter already has, "added" for new ones -->
@@ -198,8 +225,11 @@ At every viewport listed, every region can be reached by scrolling, no text is d
 - <addition> — source: <research finding or checkpoint answer>. Or "None."
 
 ## 13. Acceptance criteria
-<!-- guide: each criterion is checkable with yes or no, by looking or by a command. The first two are always these. -->
+<!-- guide: each criterion is checkable with yes or no, by looking or by a command. The first five are always these. -->
 - [ ] **First screen.** At the primary viewport, with no click and no scrolling, the first screen answers every question in section 6's first-screen test, and each answer matches the data.
+- [ ] **Thumbnail.** In a quarter-size screenshot of the first screen, what catches the eye is what section 6's thumbnail test names, and nothing it says must stay quiet.
+- [ ] **Sponsor asks.** Every ask in section 4 that isn't declined can be pointed at on a screen.
+- [ ] **Cold open.** Every screen opens in the demo as section 8's cold-open table says, with no bare empty state.
 - [ ] **Viewports.** At every viewport in section 2, on every screen: every region can be reached by scrolling, no text is drawn over other text, the page is no wider than the window, and the only cut-off text is in the columns section 6 says may truncate.
 - [ ] <criterion>
 

@@ -19,16 +19,23 @@ Before every screenshot and every measurement, wait for `document.fonts.ready` a
 
 ## Pass 1: task walk-through
 
-1. Read the brief at `docs/parallax/brief.md`, especially sections 1 (who judges, feedback so far), 2 (users and viewports), 3 (core tasks), 6 (first-screen test and screens), 8 (hero moment) and 14 (critic brief). Skim `docs/parallax/domain-research.md` for how these users work today.
+1. Read the brief at `docs/parallax/brief.md`, especially sections 1 (who judges, feedback so far), 2 (users and viewports), 3 (core tasks), 4 (sponsor asks), 5 (where this beats today's tools), 8 (hero moment and the cold-open table) and 14 (critic brief). Leave section 6 until after the thumbnail part of step 3. Skim `docs/parallax/domain-research.md` for how these users work today.
 2. Identify who will actually use this. Become that person: {{PERSONA}}.
-3. **First-screen test.** At the primary viewport, open the first screen and take one screenshot with no click and no scrolling. Answer the questions in section 6's first-screen test from that screenshot alone, then compare each answer with the data. Note which answers were immediate, which took searching, and which could not be read.
+3. **First-screen test.** Do the thumbnail part before you read section 6's answers, so you see the screen the way a judge does:
+   - Take a quarter-size screenshot of the first screen at the primary viewport (how is in the header of `docs/parallax/page-checks.js`). From that image alone, write down the three things that catch your eye and what you think the screen is telling you.
+   - Then take the full screenshot with no click and no scrolling. Answer the questions in section 6's first-screen test from it alone, and compare each answer with the data. Note which answers stood out, which had to be searched for, and which could not be read. An answer you had to search for is a finding even though it is on the screen.
+   - Compare your thumbnail notes with section 6's thumbnail test. Report anything that caught the eye and isn't an answer: a constant value in a loud colour, navigation, a chart that reads as a smear.
 4. Act out the full scenario in section 14 in the running app at the primary viewport, then every feature the scenario didn't touch. Click through it as that user would. Take a screenshot at each step that matters.
 5. Repeat the main task at each other viewport in section 2. At every viewport, on every screen:
    - Scroll every region to its end. Can everything be reached, or is content cut off below a fixed area?
    - Open every menu and dropdown. Does it open over the thing the user is working on, or off the screen?
-   - Run `docs/parallax/page-checks.js` (how is in its header) and look at each entry it reports: cut-off text, clipped areas, text drawn over its neighbour, a page wider than the window.
-6. Be as critical as that user would be on a bad day, with a queue waiting. Look for:
+   - Run `docs/parallax/page-checks.js` (how is in its header) and look at each entry it reports: cut-off text, clipped areas, text drawn over its neighbour, a page wider than the window, and columns that show one value or one status colour on most rows.
+   - For every chart, try to read its "reads as" sentence from section 6 off the screenshot. Report a chart you can't read that sentence from.
+6. Go through the sponsor asks in brief section 4. For each one that isn't declined, find the element that meets it and judge it as the sponsor would: an ask for a gradient that is met by two dots is not met. Then open every screen cold from its URL and compare it with section 8's cold-open table; a screen whose main feature only appears after scripted steps is a finding.
+7. Be as critical as that user would be on a bad day, with a queue waiting. Look for:
    - anything that slows the overall understanding of the workload, or hides a key parameter behind text, a click or a cut-off cell
+   - a screen where everything has the same size and weight, so nothing says where to look first
+   - somewhere the build copies a weakness of today's tools that brief section 5 said it would beat
    - dead ends: a state with no way forward or back
    - missing information needed for the decision in front of you
    - wrong vocabulary: words this user wouldn't use, or uses differently
@@ -36,20 +43,20 @@ Before every screenshot and every measurement, wait for `document.fonts.ready` a
    - unclear states: is this loading, empty, stale or broken? what changed? who did it?
    - an agent acting outside the "Agent rules" in brief section 10: changing something without an approval, contacting someone it may not, not identifying itself, or not showing what it did and why
    - anything a real user in this domain would reject, and why
-7. Run the hero moment from section 8 the way a person would (click the middle of each target) and time the visible state change.
+8. Run the hero moment from section 8 the way a person would (click the middle of each target) and time the visible state change.
 
 On a second or later run, the orchestrator tells you which findings were fixed. Check those first and say for each whether it is fixed, partly fixed or not. Then look for what the fixes broke, before looking for anything new.
 
 ## Pass 2: ban list
 
-1. Read the ban list in section 12 of the brief, including the project additions. The brand mark recorded in section 7 is exempt from the font and letter-spacing bans.
+1. Read the ban list in section 12 of the brief, including the project additions. The brand mark recorded in section 7 is exempt from the font and letter-spacing bans. The first-screen headline and the top-emphasis values from section 7's emphasis levels are data at a larger size, not marketing headings.
 2. Grep the source for every pattern the ban list's "How the critic finds it" lines name, and inspect each hit in context. A hit is a lead, not a verdict.
 3. Inspect your screenshots for every ban.
 4. Flag any font not named in brief section 7: check the source (`font-family`, `@font-face`, font imports, theme config) and the running app (`fontFamiliesRendered` and `fontsLoaded` in the page-checks report).
 
 ## Report
 
-Start with the first-screen test: each question, your answer, whether it matched the data, and how hard it was to read. You are a model reading a screenshot, not a person with a stopwatch, so describe the difficulty instead of claiming seconds.
+Start with the first-screen test: what caught your eye in the thumbnail, then each question, your answer, whether it matched the data, and how hard it was to read. Then the sponsor asks that are not met, or met only in name. You are a model reading a screenshot, not a person with a stopwatch, so describe the difficulty instead of claiming seconds.
 
 Then one list, ranked from worst to least important for this user. Anything that slows the overall understanding or hides a key parameter ranks first; after that, rank by how badly it would hurt the user's real work, not by which pass found it. Each observation has:
 

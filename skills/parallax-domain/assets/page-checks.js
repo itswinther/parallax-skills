@@ -8,7 +8,13 @@
 //   await page.waitForSelector("<a real data row>");   // wait for rows, not for a fixed delay
 //
 // Run it on every screen at every viewport in brief section 2. Each entry is a lead to look at,
-// not a verdict: a column that truncates by design and keeps its full value in a tooltip is fine.
+// not a verdict: a column that truncates by design and keeps its full value in a tooltip is fine,
+// and so is a Decision column that reads "—" on every row before anyone has decided.
+//
+// The thumbnail test (brief section 6) needs a quarter-size screenshot of the same layout:
+//   const small = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 0.25 });
+//   await small.goto(url); /* wait as above */ await small.screenshot({ path: "first-screen-thumb.png" });
+// The page still lays out at W x H; only the pixels shrink. Look at that image before the full one.
 (() => {
   const LIMIT = 40;
   const clips = (v) => v === "hidden" || v === "clip";
@@ -72,6 +78,44 @@
     }
   }
 
+  // Table columns that carry no signal in the data on screen: one value on nearly every row,
+  // or a status colour on most rows. Such a column belongs in a summary line, with only the
+  // exceptions left in the rows.
+  const sameValueColumns = [];
+  const colouredColumns = [];
+  const saturated = (css) => {
+    const m = css.match(/[\d.]+/g);
+    if (!m || m.length < 3 || (m.length > 3 && Number(m[3]) === 0)) return false;
+    const [r, g, b] = m.slice(0, 3).map(Number);
+    return Math.max(r, g, b) - Math.min(r, g, b) > 60;
+  };
+  for (const table of document.querySelectorAll("table")) {
+    if (!shown(table, getComputedStyle(table))) continue;
+    const rows = [...table.querySelectorAll("tbody tr")].filter((r) => shown(r, getComputedStyle(r)));
+    const widths = rows.map((r) => r.cells.length);
+    const usual = widths.sort((a, b) => widths.filter((w) => w === b).length - widths.filter((w) => w === a).length)[0];
+    const dataRows = rows.filter((r) => r.cells.length === usual);
+    if (dataRows.length < 5) continue;
+    const heads = [...table.querySelectorAll("thead th")].map((th) => text(th));
+    for (let c = 0; c < usual; c++) {
+      const cells = dataRows.map((r) => r.cells[c]);
+      const values = cells.map((cell) => text(cell));
+      const counts = {};
+      for (const v of values) counts[v] = (counts[v] || 0) + 1;
+      const [top, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+      const name = heads[c] || "column " + (c + 1);
+      if (top && n / cells.length >= 0.8) sameValueColumns.push({ table: where(table), column: name, value: top.slice(0, 40), rows: n + " of " + cells.length });
+      const coloured = cells.filter((cell) =>
+        text(cell) &&
+        [cell, ...cell.querySelectorAll("*")].some((el) => {
+          const cs = getComputedStyle(el);
+          return saturated(cs.backgroundColor) || (ownText(el) && saturated(cs.color));
+        })
+      ).length;
+      if (coloured / cells.length > 0.5) colouredColumns.push({ table: where(table), column: name, rows: coloured + " of " + cells.length });
+    }
+  }
+
   const root = document.documentElement;
   const rootStyle = getComputedStyle(root);
   const bodyStyle = getComputedStyle(document.body);
@@ -91,6 +135,8 @@
     clippedAreas: cap(clippedAreas),
     spills: cap(spills),
     overlaps: cap(overlaps),
+    sameValueColumns: cap(sameValueColumns),
+    colouredColumns: cap(colouredColumns),
     fontFamiliesRendered: Object.fromEntries(families),
     fontsLoaded: [...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family.replace(/["']/g, "") + " " + f.weight),
   };

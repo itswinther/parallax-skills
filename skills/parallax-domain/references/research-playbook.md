@@ -12,7 +12,7 @@ Research is sufficient when every question here has an answer backed by a source
 | Q2 | Where and how do they use it? Desk, control room, field, mobile, gloves, sunlight, multiple monitors, shared screen. | Device, screen count, size and resolution, posture, lighting, noise, whether others look at the same screen. The resolution sets the brief's primary viewport; if no source gives it, say so, because it becomes a sponsor question. |
 | Q3 | How often, and for how long? Glance vs. long shifts. Interruptions. | Shift length, how many items they handle per hour, how often they are interrupted and by what (calls, radio, alarms). Counts computed from the challenge data are valid evidence when no public source exists; state the query and scale it to the sponsor's stated volume. |
 | Q4 | What's at stake? Stress level, cost of errors, time pressure. | The worst realistic mistake and what it costs (money, safety, a customer), and how fast a decision must be made. |
-| Q5 | What do they use today? Named products, Excel, radio, paper. | Product names, plus what they complain about in those products. |
+| Q5 | What do they use today, and what does it do badly? Named products, Excel, radio, paper. | Product names, plus a list of what is slow, manual, opaque or error-prone in them, each with who said it. The sponsor's own words count most: a sponsor who calls today's tool "a black box" or says a step "takes hours" has told you where the build should differ from that tool. This list decides where the design departs from the real tools; Q7 decides where it follows them. |
 | Q6 | What are the core decisions they make, and what information does each decision need? | A list of decisions, each with its trigger, the facts needed, who else is involved, and what "done" looks like. |
 | Q7 | What do real tools in this industry look like? Layout, density, navigation, colour meaning, table/map/timeline/queue/form conventions. | At least three named products, each with links to actual screenshots, docs or demo videos, and notes on layout, density, navigation, what colour means, and the typeface where you can identify it. |
 | Q8 | Which standards or constraints apply? | The standards that apply and the concrete rules they impose on this UI, or a sourced statement that none apply. Examples: ISA-101 and ISO 11064 for industrial and control-room HMI, accessibility rules for the public sector, national design systems, language requirements such as Finnish and Swedish characters. If the idea includes an AI agent, also the rules on what it must disclose and where a person must stay in the loop (for example AI disclosure and human-oversight laws, platform-work rules). |
@@ -49,6 +49,7 @@ Chosen idea: <one paragraph>
 Sponsor: <name and what they do>
 Users named in the brief: <roles or desks; say which one the idea serves>
 Data highlights: <entities, notable fields, formats, and any counts already computed>
+What the sponsor has said about today's tools and what they want: <their words, or "nothing yet">
 Library rules already confirmed for this archetype: <list>
 
 Your track: <track name>
@@ -93,6 +94,7 @@ Do not use as evidence: Dribbble, Behance, UI-kit marketplaces, dashboard templa
 - **Record each screenshot you rely on:** product, view, URL, date if known, and what it shows about layout, density, navigation and colour meaning.
 - **Triangulate.** Treat a UI convention as established when at least two independent products or a standard show it. One product is a data point.
 - **Look for where tools differ.** Differences between real tools mark the design decisions; agreement marks conventions to follow.
+- **Don't mistake an incumbent for a model.** A convention every tool shares (a code, a unit, a table layout users read natively) is worth following. A weakness every tool shares (no overview, results that must be read row by row, a calculation nobody can see into) is the opening the build is judged on. Record both, separately.
 - **Use the challenge data.** Fields that disagree, free-text notes, and ambiguous statuses show where the users' real work is. Count it too: how many records would need a person, how severities and statuses are distributed. A skewed distribution (for example most alerts marked "high") tells you that ranking by the data's own severity won't work.
 - **Know your reach.** If pages can't be opened, search results still name products and conventions, but they rarely show density, row height, empty states or typefaces. Mark those as assumptions instead of guessing them from text.
 - **Separate fact, source and confidence** in your notes, so the brief can cite and the checkpoint can flag weak spots.
@@ -122,6 +124,12 @@ Answer. Evidence (links). Confidence.
 
 ## Real tools reviewed
 | Product | View | Source | What it shows |
+
+## What today's tools do badly
+| Weakness | Who says so (source) | What the build could do instead |
+
+## Sponsor asks
+| # | Ask, in their words | Where they said it |
 
 ## Vocabulary
 | Term users say | Meaning | Use in UI as |
