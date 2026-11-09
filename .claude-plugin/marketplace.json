@@ -1,0 +1,17 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "parallax-skills",
+  "description": "Parallax: Claude Code skills for hackathon teams.",
+  "owner": {
+    "name": "Winther",
+    "url": "https://github.com/itswinther"
+  },
+  "plugins": [
+    {
+      "name": "parallax",
+      "source": "./",
+      "description": "Turn a hackathon challenge and your chosen idea into a domain-correct UI brief and build plan, then save what worked after each event.",
+      "category": "productivity"
+    }
+  ]
+}

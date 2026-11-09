@@ -1,0 +1,14 @@
+{
+  "$schema": "https://code.claude.com/schemas/plugin.json",
+  "name": "parallax",
+  "displayName": "Parallax",
+  "description": "Hackathon skills: turn a challenge and your chosen idea into a domain-correct UI brief and build plan, then save what worked after each event.",
+  "author": {
+    "name": "Winther",
+    "url": "https://github.com/itswinther"
+  },
+  "homepage": "https://github.com/itswinther/parallax-skills",
+  "repository": "https://github.com/itswinther/parallax-skills",
+  "license": "MIT",
+  "keywords": ["hackathon", "ui-design", "domain-research", "build-brief", "skills"]
+}

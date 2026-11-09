@@ -17,7 +17,9 @@ The skill folders are normally installed as symlinks (macOS, Linux) or junctions
    - Windows PowerShell: `(Get-Item -LiteralPath "${CLAUDE_SKILL_DIR}").Target` prints the junction's target. Empty output means the folder is not a link.
    - Windows cmd: `dir /AL "%USERPROFILE%\.claude\skills"` lists junctions with their targets in brackets.
 2. From the real path, the library is `../parallax-domain/library/` and the ban list is `../parallax-domain/references/ban-list.md`.
-3. Check both: `library/INDEX.md` exists, and `git -C "<real path>" rev-parse --show-toplevel` succeeds. If the real path isn't inside a git work tree, the skills were copied instead of linked. Stop and ask the user for the clone's path.
+3. Check both: `library/INDEX.md` exists, and `git -C "<real path>" rev-parse --show-toplevel` succeeds. If the real path isn't inside a git work tree, the skills were installed as a plugin (the path is under `~/.claude/plugins/`) or copied. Don't write there: a plugin's folder is replaced on every update, and the lessons would be lost. Stop and tell the user, in two or three lines:
+   - Saving lessons needs the linked install from the README: a clone of the repo (or their fork) linked into `~/.claude/skills/`, with the plugin uninstalled so the two installs don't both load.
+   - If they already have a clone, ask for its path and continue there. Say that a plugin install of `parallax-domain` only sees these lessons once they're pushed to the repo the plugin was installed from and the plugin updates.
 4. Run `git -C "<repo root>" status --porcelain` and note files that are already changed, so the commit in step 8 includes only this skill's changes.
 
 Use the resolved paths for every read and write below.

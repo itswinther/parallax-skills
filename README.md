@@ -9,7 +9,32 @@ Two Claude Code skills for hackathons.
 
 ## Install
 
-Clone the repo once, then link both skill folders into `~/.claude/skills/`. Linking instead of copying means `git pull` updates the skills, and lessons saved by `parallax-domain-learn` land in the clone, where git tracks them.
+### As a plugin (quickest)
+
+In a Claude Code session (v2.1.275 or later):
+
+```
+/plugin install parallax --marketplace itswinther/parallax-skills
+```
+
+On older versions, add the marketplace first, then install:
+
+```
+/plugin marketplace add itswinther/parallax-skills
+/plugin install parallax@parallax-skills
+```
+
+Plugin skills carry the plugin's name, so you run them as `/parallax:parallax-domain` and `/parallax:parallax-domain-learn`. Plain-language requests work too.
+
+- **Update:** `/plugin marketplace update parallax-skills`, or turn on auto-update for it under **Marketplaces** in `/plugin`. Every push to this repo is a new version.
+- **Remove:** `/plugin uninstall parallax@parallax-skills`.
+- **Lessons:** the plugin gives you the pattern library as published here, but its folder is replaced on every update, so `parallax-domain-learn` can't save your own lessons into it. To keep your own lessons, use the linked install below instead.
+
+### Linked clone (to save your own lessons)
+
+Use this if you want `parallax-domain-learn` to save lessons, or to edit the skills. Uninstall the plugin first, so the skills don't load twice.
+
+Clone the repo once (or your fork), then link both skill folders into `~/.claude/skills/`. Linking instead of copying means `git pull` updates the skills, and lessons saved by `parallax-domain-learn` land in the clone, where git tracks them.
 
 ```sh
 git clone https://github.com/itswinther/parallax-skills.git
@@ -17,7 +42,7 @@ git clone https://github.com/itswinther/parallax-skills.git
 
 Below, `<toolkit>` is the absolute path of that clone, for example `C:\Users\<you>\parallax-skills` or `~/parallax-skills`.
 
-### Windows (cmd, no admin rights needed)
+#### Windows (cmd, no admin rights needed)
 
 Junctions (`mklink /J`) work without admin rights or Developer Mode.
 
@@ -35,7 +60,7 @@ New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills\parallax-doma
 New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills\parallax-domain-learn" -Target "<toolkit>\skills\parallax-domain-learn"
 ```
 
-### macOS and Linux
+#### macOS and Linux
 
 Use absolute paths; a relative symlink target is resolved from the link's folder, not from where you run the command.
 
@@ -45,7 +70,7 @@ ln -s "<toolkit>/skills/parallax-domain" ~/.claude/skills/parallax-domain
 ln -s "<toolkit>/skills/parallax-domain-learn" ~/.claude/skills/parallax-domain-learn
 ```
 
-### Check, update, remove
+#### Check, update, remove
 
 - **Check:** start `claude` anywhere and type `/parallax`. Both skills should appear in the menu.
 - **Update:** `git pull` in the clone. The links follow.
@@ -126,6 +151,9 @@ It loads the brief, critic reports, findings report and build log, then asks wha
 ```
 README.md                         install + usage
 LICENSE                           MIT
+.claude-plugin/
+  plugin.json                     plugin manifest (name: parallax)
+  marketplace.json                lets /plugin install it from this repo
 skills/parallax-domain/
   SKILL.md
   references/
