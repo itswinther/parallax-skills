@@ -11,7 +11,11 @@ Two Claude Code skills for hackathons.
 
 Clone the repo once, then link both skill folders into `~/.claude/skills/`. Linking instead of copying means `git pull` updates the skills, and lessons saved by `parallax-domain-learn` land in the clone, where git tracks them.
 
-Below, `<toolkit>` is the absolute path of the folder that holds this README.
+```sh
+git clone https://github.com/itswinther/parallax-skills.git
+```
+
+Below, `<toolkit>` is the absolute path of that clone, for example `C:\Users\<you>\parallax-skills` or `~/parallax-skills`.
 
 ### Windows (cmd, no admin rights needed)
 
@@ -114,12 +118,14 @@ It loads the brief, critic reports, findings report and build log, then asks wha
 
 - `skills/parallax-domain/library/` starts empty. Entries only come from `parallax-domain-learn`, after you confirm them, so `parallax-domain` can treat them as confirmed rules.
 - A rule seen again gains evidence and a higher count. A rule contradicted by a later event is marked contested with both sides, and nothing is removed without your say-so.
+- This repo is public, so lessons and bans become public once pushed. `parallax-domain-learn` asks before every push; keep sponsor-confidential details out of the evidence lines.
 - `skills/parallax-domain/references/ban-list.md` holds the six bans on the "AI look". New bans enter only through `parallax-domain-learn`.
 
 ## Layout
 
 ```
 README.md                         install + usage
+LICENSE                           MIT
 skills/parallax-domain/
   SKILL.md
   references/
@@ -140,4 +146,6 @@ skills/parallax-domain-learn/
   SKILL.md
 ```
 
-This toolkit currently lives in the `parallax/` folder of a personal Obsidian vault, which is excluded from Obsidian's search and graph. To move it into its own repo with its history, run `git subtree split --prefix=parallax -b parallax-standalone` in the vault and push that branch to a new repo.
+## Licence
+
+MIT. See [LICENSE](LICENSE).
