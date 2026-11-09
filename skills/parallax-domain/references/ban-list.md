@@ -46,6 +46,8 @@ The "How the critic finds it" lines are search aids for existing bans, not extra
 
 **Instead:** delete it. If the label carries information the heading doesn't, such as an order number above a customer name, keep it and style it as data, not as decoration.
 
+**Not covered:** the letter-spacing of a logo or wordmark the human chose to keep, recorded as the brand mark in the brief's section 7. It is the team's identity, not a label.
+
 **How the critic finds it:** look for small uppercase or letter-spaced text directly above a heading: grep for `uppercase` with `tracking-` classes, `letter-spacing` on small text, `eyebrow`, `overline`, `kicker`. Compare each one with its heading and the navigation.
 
 ## 5. Random italics
@@ -66,7 +68,9 @@ The "How the critic finds it" lines are search aids for existing bans, not extra
 
 **Instead:** use only the families, weights and fallback stacks listed in the brief's section 7. Don't add web fonts, and don't let a component library load its own font.
 
-**How the critic finds it:** grep for `font-family`, `@font-face`, `fonts.googleapis`, `@fontsource`, `next/font`, `fontFamily` in Tailwind or theme config. In the running app, list the families actually rendered, for example with Playwright: collect `getComputedStyle(el).fontFamily` for all elements and check `document.fonts`. Flag any family not named in the brief.
+**Not covered:** the font of a logo or wordmark the human chose to keep, recorded as the brand mark in the brief's section 7 and used for nothing else. The human picked it, which is the point of this ban.
+
+**How the critic finds it:** grep for `font-family`, `@font-face`, `fonts.googleapis`, `@fontsource`, `next/font`, `fontFamily` in Tailwind or theme config. In the running app, list the families actually rendered: `docs/parallax/page-checks.js` reports them as `fontFamiliesRendered` and `fontsLoaded`. Flag any family not named in the brief.
 
 ## Confirmed additions
 

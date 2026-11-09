@@ -78,14 +78,14 @@ ln -s "<toolkit>/skills/parallax-domain-learn" ~/.claude/skills/parallax-domain-
 
 ### Requirements
 
-- Claude Code with access to Opus 5.5 (`claude-opus-5-5`) and Sonnet 5.5 (`claude-sonnet-5-5`).
+- Claude Code with access to an Opus and a Sonnet model. The agent files use the `opus` and `sonnet` aliases, so they follow the latest versions.
 - Web search enabled, and web fetch able to open vendor help centres and standards sites, for the domain research. Where pages are blocked (some cloud sessions allow only a short host list), the skill falls back to search results and says so at the checkpoint. Searches are shared by the parallel research tracks within one turn, so deep research can take more than one round.
 - `npm` (or `pip`) on the path, so the skill can pin package versions when it writes the brief.
-- Playwright in the code repo during the build, for the critic's screenshots. The orchestrator adds it if it's missing.
+- Playwright in the code repo during the build, for screenshots and layout checks. The orchestrator adds it during setup if it's missing, and falls back to an installed Edge or Chrome if Playwright's own browser won't start.
 
 ## Use `parallax-domain`
 
-Give it the challenge brief (file, pasted text or link), the chosen idea and the path of the code repo. Add the dataset, starter repo, judging criteria, deadline or sponsor info if you have them.
+Give it the challenge brief (file, pasted text or link), the chosen idea and the path of the code repo. Add the dataset, starter repo, judging criteria, deadline, sponsor info or feedback you've already had, if you have them. It also works on a repo that already has a UI: it then proposes what to keep and what to remove.
 
 ```
 /parallax-domain challenge: C:\hack\bahn\PARTICIPANT-BRIEF.md | idea: an exceptions-first control room where an on-the-road agent handles missed ferries and asks the operator to approve the new plan | repo: C:\hack\bahn
@@ -96,7 +96,17 @@ Plain language works too: "We chose the exceptions queue idea for the Bahn chall
 What happens:
 
 1. It reads your inputs and its pattern library, then researches the domain live: users and tasks, real tools and their UI conventions, standards and data conventions. It writes `docs/parallax/domain-research.md`.
-2. **It stops once.** You get the users and tasks with sources, the proposed screens, 2 to 3 font pairings to choose from, a palette, the stack with pinned versions and a fallback, the demo hero moment, any conflicts with the library, and questions to ask the sponsor. It also writes all of this to `docs/parallax/checkpoint.md`, so you can read it in full while answering. You pick the fonts and approve or change the rest.
+2. **It stops once.** You get:
+   - the users and tasks with sources;
+   - the proposed screens, what the first screen tells a newcomer in 10 seconds, and the screen sizes it will be built for;
+   - 2 to 3 font pairings to choose from, and a palette;
+   - the stack with pinned versions and a fallback;
+   - the demo hero moment;
+   - what it keeps and removes, if the repo already has a UI;
+   - a time plan and a cut line, if there is a deadline;
+   - any conflicts with the library, and questions to ask the sponsor.
+
+   It also writes all of this to `docs/parallax/checkpoint.md`, so you can read it in full while answering. You pick the fonts and approve or change the rest.
 3. It finishes without stopping again and writes, in the code repo:
 
 | File | What it is |
@@ -104,28 +114,45 @@ What happens:
 | `docs/parallax/brief.md` | The brief: 15 sections, from users and screens to acceptance criteria |
 | `docs/parallax/domain-research.md` | Research notes with sources |
 | `docs/parallax/checkpoint.md` | What was proposed at the checkpoint, and what you chose |
-| `docs/parallax/orchestrator-prompt.md` | The prompt for the coding session, also printed in chat |
+| `docs/parallax/orchestrator-prompt.md` | Instructions for the coding session |
+| `docs/parallax/page-checks.js` | Layout checks run in the browser: cut-off text, unreachable areas, overlapping text, fonts |
 | `.claude/agents/parallax-ui.md` | UI builder |
 | `.claude/agents/parallax-logic.md` | Data, API, agent logic and mock data builder |
 | `.claude/agents/parallax-critic.md` | Read-only critic |
 
-4. Start the coding session in the code repo and paste the prompt:
+4. Start a new Claude Code session in the code repo, on the most capable model you have, at high effort. In the desktop app, open a new session with the code repo as its folder. In a terminal:
 
 ```sh
 cd <code-repo>
-claude --model claude-opus-5-5 --effort high
+claude --model opus --effort high
 ```
 
-That session is the orchestrator. It sets up the stack, writes the UI ↔ logic contract into code, runs the builders in parallel, integrates, runs the critic, verifies each finding with its own research, and reports to you before fixing anything.
+Then send one line:
+
+```
+Read docs/parallax/orchestrator-prompt.md and follow it.
+```
+
+That session is the orchestrator. It works through these steps:
+
+1. Sets up the stack and the screenshot browser, and writes the UI ↔ logic contract into code.
+2. Runs the two builders in parallel, then integrates.
+3. Runs the first-screen test, the hero moment and the layout checks at every screen size.
+4. Runs the critic, verifies each finding with its own research, and reports to you before fixing anything.
+5. Applies the fixes you choose, then asks you to look at the app on your own screen before any second critic run.
+
+Two critic runs is the default limit.
 
 | Agent | Model | Effort | Job |
 | --- | --- | --- | --- |
-| Orchestrator (main session) | Opus 5.5 | high | Owns the brief and the contract, coordinates, integrates, verifies, reports |
-| `parallax-ui` | Opus 5.5 | medium | Builds screens and components exactly to the brief |
-| `parallax-logic` | Opus 5.5 | medium | Builds the data layer, API, agent and business logic, mock data |
-| `parallax-critic` | Sonnet 5.5 | default | Read-only: walks through every task as the real user, then checks the ban list |
+| Orchestrator (main session) | your most capable | high | Owns the brief and the contract, coordinates, integrates, verifies, reports |
+| `parallax-ui` | `opus` | medium | Builds screens and components exactly to the brief |
+| `parallax-logic` | `opus` | medium | Builds the data layer, API, agent and business logic, mock data |
+| `parallax-critic` | `sonnet` | default | Read-only: walks through every task as the real user at every screen size, then checks the ban list |
 
-During the build the orchestrator also writes `docs/parallax/critic-report-<n>.md`, `docs/parallax/findings-report.md` and `docs/parallax/build-log.md`. The retro reads them.
+During the build the orchestrator also writes `docs/parallax/critic-report-<n>.md`, `docs/parallax/findings-report-<n>.md` and `docs/parallax/build-log.md`. The retro reads them.
+
+If the session is cut off, or you get new feedback after the brief is written, run `parallax-domain` again on the same repo: it resumes from the files in `docs/parallax/`, or revises the brief, without redoing the research.
 
 ## Use `parallax-domain-learn`
 
@@ -137,14 +164,14 @@ Run it after the event, pointing at the event's code repo:
 
 Or: "Let's do the retro for the Bahn hackathon."
 
-It loads the brief, critic reports, findings report and build log, then asks what the judges and sponsor said, what the result was, which brief decisions held up, what the team changed and why, which critic findings were real, and what you'd do differently. It proposes candidate lessons, each with its archetype, rule, reason, scope and evidence. You confirm, edit or reject each one. Only confirmed lessons are saved, to `skills/parallax-domain/library/domains/<archetype>.md`, and the index is updated. A new ban goes into the ban list only if you confirm it as a ban. It commits, then asks before pushing.
+It loads the brief, critic reports, findings reports and build log, then asks what the judges and sponsor said, what the result was, which brief decisions held up, what the team changed and why, which critic findings were real, and what you'd do differently. It proposes candidate lessons, each with its archetype, rule, reason, scope and evidence. You confirm, edit or reject each one. Only confirmed lessons are saved, to `skills/parallax-domain/library/domains/<archetype>.md`, and the index is updated. A new ban goes into the ban list only if you confirm it as a ban. It commits, then asks before pushing.
 
 ## How the library and ban list grow
 
 - `skills/parallax-domain/library/` starts empty. Entries only come from `parallax-domain-learn`, after you confirm them, so `parallax-domain` can treat them as confirmed rules.
 - A rule seen again gains evidence and a higher count. A rule contradicted by a later event is marked contested with both sides, and nothing is removed without your say-so.
 - This repo is public, so lessons and bans become public once pushed. `parallax-domain-learn` asks before every push; keep sponsor-confidential details out of the evidence lines.
-- `skills/parallax-domain/references/ban-list.md` holds the six bans on the "AI look". New bans enter only through `parallax-domain-learn`.
+- `skills/parallax-domain/references/ban-list.md` holds the six bans on the "AI look". New bans enter only through `parallax-domain-learn`. A logo or wordmark you choose to keep is exempt from the font and letter-spacing bans.
 
 ## Layout
 
@@ -162,7 +189,8 @@ skills/parallax-domain/
     ban-list.md                   banned "AI look" patterns
     font-guidance.md              how to suggest fonts (human picks)
   assets/
-    orchestrator-prompt.md        template for the paste-ready prompt
+    orchestrator-prompt.md        template for the coding session's instructions
+    page-checks.js                layout checks, copied into the code repo
     agents/
       parallax-ui.md              subagent definition
       parallax-logic.md           subagent definition

@@ -9,7 +9,7 @@ Research is sufficient when every question here has an answer backed by a source
 | # | Question | A good answer looks like |
 | --- | --- | --- |
 | Q1 | Who is the primary user? Role, expertise, the vocabulary they use. | A job title as the industry writes it, years of experience typical for the role, and 10 to 20 words they use for the things on screen (for example "ETA", "POD", "no-show", "exception"). If the challenge names several roles or desks, the primary user is the one the idea serves; list the others as secondary users. |
-| Q2 | Where and how do they use it? Desk, control room, field, mobile, gloves, sunlight, multiple monitors, shared screen. | Device, screen count and size, posture, lighting, noise, whether others look at the same screen. |
+| Q2 | Where and how do they use it? Desk, control room, field, mobile, gloves, sunlight, multiple monitors, shared screen. | Device, screen count, size and resolution, posture, lighting, noise, whether others look at the same screen. The resolution sets the brief's primary viewport; if no source gives it, say so, because it becomes a sponsor question. |
 | Q3 | How often, and for how long? Glance vs. long shifts. Interruptions. | Shift length, how many items they handle per hour, how often they are interrupted and by what (calls, radio, alarms). Counts computed from the challenge data are valid evidence when no public source exists; state the query and scale it to the sponsor's stated volume. |
 | Q4 | What's at stake? Stress level, cost of errors, time pressure. | The worst realistic mistake and what it costs (money, safety, a customer), and how fast a decision must be made. |
 | Q5 | What do they use today? Named products, Excel, radio, paper. | Product names, plus what they complain about in those products. |
@@ -41,6 +41,8 @@ research tracks running now, so spend them on your weakest questions first. If y
 say which questions are still thin; another round will follow.
 Page access: <"pages open normally" or "vendor and standards sites could not be fetched; rely on
 search results and say so">.
+PDFs: if a fetch returns a PDF as binary, save the file and read it instead of settling for the
+search snippet. Seminar and training slide decks often hold the only real screenshots of a tool.
 
 Challenge: <one paragraph>
 Chosen idea: <one paragraph>
@@ -94,7 +96,8 @@ Do not use as evidence: Dribbble, Behance, UI-kit marketplaces, dashboard templa
 - **Use the challenge data.** Fields that disagree, free-text notes, and ambiguous statuses show where the users' real work is. Count it too: how many records would need a person, how severities and statuses are distributed. A skewed distribution (for example most alerts marked "high") tells you that ranking by the data's own severity won't work.
 - **Know your reach.** If pages can't be opened, search results still name products and conventions, but they rarely show density, row height, empty states or typefaces. Mark those as assumptions instead of guessing them from text.
 - **Separate fact, source and confidence** in your notes, so the brief can cite and the checkpoint can flag weak spots.
-- **Stop at saturation.** When a full round of new searches changes no answer, stop. Until then, keep going.
+- **Read PDFs, don't skip them.** Standards, regulator guidance and seminar slide decks usually come as PDFs, and a fetch can return them as binary. Save the file and read it: the Read tool renders the pages, including slides that show a tool's real screens. In one run this was how most of the real screens of the domain's tools were seen.
+- **Stop at saturation.** When a full round of new searches changes no answer, stop. Until then, keep going, within the time budget the skill sets. A round searches every thin question again with different terms or sources; two or three extra searches are not a round.
 - **Remember who judges.** At sponsored hackathons the judges are often the sponsor's operations staff or their managers, so domain-correct details are noticed.
 
 ## Output format: domain-research.md

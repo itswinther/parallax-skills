@@ -31,8 +31,8 @@ Ask for the event's code repo path if it wasn't given. If the current directory 
 - `docs/parallax/brief.md`. Required; if it's missing, ask where the brief is.
 - `docs/parallax/checkpoint.md`: what `parallax-domain` proposed and what the user chose (fonts, palette, stack, hero moment), if available.
 - `docs/parallax/critic-report-*.md`, if any.
-- `docs/parallax/findings-report.md`, the orchestrator's verified findings, if available.
-- `docs/parallax/build-log.md`, the orchestrator's log of departures from the brief, if available.
+- `docs/parallax/findings-report*.md`, the orchestrator's verified findings, one per critic run, if available. Count the findings per run: a count that doesn't fall from run to run means the later runs were chasing their own fixes.
+- `docs/parallax/build-log.md`, the orchestrator's log of departures from the brief, if available. Read the entries for fixes the user asked for after looking at the app themselves with particular care: they are what the brief and the critic both missed, and the most likely source of a lesson.
 - `docs/parallax/domain-research.md`: skim for the library rules applied and the assumptions made.
 - `git log --oneline` of the code repo since the brief's date, to see what changed during the build.
 
@@ -48,7 +48,7 @@ Ask these six questions in one message. Under each, put what the documents alrea
 2. What was the result?
 3. Which brief decisions held up? List the main ones from the brief (primary view type, density, colour semantics, screens, stack, hero moment, fonts) so the user can answer per decision.
 4. What did the team change during the build, and why?
-5. Which critic findings were real? Ask this with AskUserQuestion, multi-select, listing the findings the orchestrator marked confirmed or partly right (up to 4 options per question, more questions if needed). Mention that rejected findings can be named under Other.
+5. Which critic findings were real? Ask this with AskUserQuestion, multi-select, listing the findings the orchestrator marked confirmed or partly right, worst first (up to 4 options per question and 4 questions per call; with more findings than that, list the top ones and take the rest in chat). Mention that rejected findings can be named under Other. Also list what the user fixed themselves after the critic runs, from the build log, and ask why each mattered.
 6. What would you do differently?
 
 Follow up where an answer is too vague to become a rule. "The judges liked it" can't guide a future brief; "the judges said the queue showed only what needed a person, and that was the point" can.
